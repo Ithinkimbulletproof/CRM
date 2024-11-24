@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Чат{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Чат</h1>
+        
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-warning text-white">
+                        <strong>Общий чат</strong>
+                    </div>
+                    <div class="card-body" id="chat-box" style="height: 300px; overflow-y: scroll;">
+                    </div>
+                    <div class="card-footer">
+                        <form id="chat-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="message-input" placeholder="Введите сообщение" aria-label="Введите сообщение" required>
+                                <button class="btn btn-warning" type="submit">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+
+            const chatBox = document.getElementById('chat-box');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message');
+            newMessage.textContent = message;
+
+            chatBox.appendChild(newMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            messageInput.value = '';
+        });
+    </script>
+{% endblock %}

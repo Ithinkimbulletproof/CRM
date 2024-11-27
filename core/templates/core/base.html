@@ -66,17 +66,6 @@
                     <li><a href="/employees/" class="nav-link text-white {% if request.path == '/employees/' %}text-warning{% endif %}">Сотрудники</a></li>
                     <li><a href="/chat/" class="nav-link text-white {% if request.path == '/chat/' %}text-warning{% endif %}">Чат</a></li>
                 </ul>
-
-                <div class="text-end">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'customer_account' %}" class="btn btn-outline-light me-2">Личный кабинет</a>
-                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning">Выход</button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Вход</a>
-                    {% endif %}
                 </div>
             </div>
         </div>

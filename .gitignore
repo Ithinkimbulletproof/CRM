@@ -25,10 +25,6 @@ static/
 # Медиафайлы, если загружаются пользователями
 media/
 
-# Файлы миграций Django
-*/migrations/*.py
-!*/migrations/__init__.py
-
 # Кэш и временные папки
 *.tmp
 *.bak

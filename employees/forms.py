@@ -2,6 +2,11 @@ from django import forms
 from .models import Employee
 
 class EmployeeCreationForm(forms.ModelForm):
+    username = forms.CharField(
+        label="Логин",
+        max_length=50,
+        help_text="Введите уникальный логин для сотрудника."
+    )
     password1 = forms.CharField(
         label="Пароль",
         widget=forms.PasswordInput,
@@ -15,7 +20,7 @@ class EmployeeCreationForm(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'position', 'phone_number', 'email']
+        fields = ['username', 'first_name', 'last_name', 'position', 'phone_number', 'email']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -24,9 +29,16 @@ class EmployeeCreationForm(forms.ModelForm):
             raise forms.ValidationError("Пароли не совпадают.")
         return password2
 
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if Employee.objects.filter(username=username).exists():
+            raise forms.ValidationError("Пользователь с таким логином уже существует.")
+        return username
+
     def save(self, commit=True):
         employee = super().save(commit=False)
-        employee.set_password(self.cleaned_data["password1"])
+        if self.cleaned_data.get("password1"):
+            employee.set_password(self.cleaned_data["password1"])
         if commit:
             employee.save()
         return employee

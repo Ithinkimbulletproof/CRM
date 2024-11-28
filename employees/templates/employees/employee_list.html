@@ -4,18 +4,22 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Список сотрудников</h1>
     <div class="row">
-        {% for employee in employees %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ employee.first_name }} {{ employee.last_name }}</h5>
-                        <p class="card-text"><strong>Должность:</strong> {{ employee.position }}</p>
-                        <p class="card-text"><strong>Телефон:</strong> {{ employee.phone_number }}</p>
-                        <a href="{% url 'update_employee' employee.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+        {% if employees %}
+            {% for employee in employees %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ employee.first_name }} {{ employee.last_name }}</h5>
+                            <p class="card-text"><strong>Должность:</strong> {{ employee.position }}</p>
+                            <p class="card-text"><strong>Телефон:</strong> {{ employee.phone_number }}</p>
+                            <a href="{% url 'update_employee' employee.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p class="text-center text-muted">Сотрудников пока нет.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

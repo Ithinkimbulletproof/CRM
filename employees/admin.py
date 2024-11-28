@@ -4,8 +4,8 @@ from .forms import EmployeeCreationForm
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name", "position", "phone_number", "email")
-    search_fields = ("first_name", "last_name", "position", "email")
+    list_display = ("username", "first_name", "last_name", "position", "phone_number", "email")
+    search_fields = ("username", "first_name", "last_name", "position", "email")
     list_filter = ("position",)
 
     def get_form(self, request, obj=None, **kwargs):

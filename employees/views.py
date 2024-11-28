@@ -3,7 +3,7 @@ from .models import Employee
 from .forms import EmployeeCreationForm
 
 def employee_list(request):
-    employees = Employee.objects.all()
+    employees = Employee.objects.filter(is_superuser=False)
     return render(request, "employees/employee_list.html", {"employees": employees})
 
 def update_employee(request, pk):

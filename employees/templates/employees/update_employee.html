@@ -6,6 +6,10 @@
     <form method="post" class="shadow p-4 rounded bg-light">
         {% csrf_token %}
         <div class="mb-3">
+            <label for="username" class="form-label">Логин</label>
+            {{ form.username }}
+        </div>
+        <div class="mb-3">
             <label for="first_name" class="form-label">Имя</label>
             {{ form.first_name }}
         </div>
@@ -20,6 +24,10 @@
         <div class="mb-3">
             <label for="phone_number" class="form-label">Телефон</label>
             {{ form.phone_number }}
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Электронная почта</label>
+            {{ form.email }}
         </div>
         <button type="submit" class="btn btn-success">Сохранить</button>
         <a href="{% url 'employee_list' %}" class="btn btn-secondary">Отмена</a>

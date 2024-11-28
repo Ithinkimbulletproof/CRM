@@ -55,21 +55,35 @@
 <body>
     <header class="p-3 fixed-top">
         <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
                 <a href="/" class="d-flex align-items-center mb-lg-0 text-white text-decoration-none">
                     <span class="fs-4">Логотип</span>
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 d-flex flex-column flex-md-row">
-                    <li><a href="/" class="nav-link text-white {% if request.path == '/' %}text-warning{% endif %}">Главная</a></li>
-                    <li><a href="/tasks/" class="nav-link text-white {% if request.path == '/tasks/' %}text-warning{% endif %}">Задачи</a></li>
-                    <li><a href="/employees/" class="nav-link text-white {% if request.path == '/employees/' %}text-warning{% endif %}">Сотрудники</a></li>
-                    <li><a href="/chat/" class="nav-link text-white {% if request.path == '/chat/' %}text-warning{% endif %}">Чат</a></li>
-                    <li><a href="/documents/" class="nav-link text-white {% if request.path == '/documents/' %}text-warning{% endif %}">Документы</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="/" class="nav-link text-white {% if request.path == '/' %}text-warning{% endif %}">Главная</a></li>
+                        <li><a href="/tasks/" class="nav-link text-white {% if request.path == '/tasks/' %}text-warning{% endif %}">Задачи</a></li>
+                        <li><a href="/employees/" class="nav-link text-white {% if request.path == '/employees/' %}text-warning{% endif %}">Сотрудники</a></li>
+                        <li><a href="/chat/" class="nav-link text-white {% if request.path == '/chat/' %}text-warning{% endif %}">Чат</a></li>
+                        <li><a href="/documents/" class="nav-link text-white {% if request.path == '/documents/' %}text-warning{% endif %}">Документы</a></li>
+                    {% endif %}
                 </ul>
+
+                <div class="text-end">
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light me-2">Выйти</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Войти</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
+    </header>
+    <p>Пользователь аутентифицирован: {{ user.is_authenticated }}</p>
     </header>
 
     <main class="container">

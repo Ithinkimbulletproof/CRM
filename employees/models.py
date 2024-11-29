@@ -1,20 +1,26 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.db import models
+
 
 class EmployeeManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         if not username:
             raise ValueError("Логин обязателен")
-        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault("is_active", True)
         user = self.model(username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, username, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
         return self.create_user(username, password, **extra_fields)
+
 
 class Employee(AbstractBaseUser, PermissionsMixin):
     username = models.CharField("Логин", max_length=50, unique=True)
@@ -29,8 +35,8 @@ class Employee(AbstractBaseUser, PermissionsMixin):
 
     objects = EmployeeManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.position})"

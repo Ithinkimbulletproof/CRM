@@ -1,27 +1,34 @@
 from django import forms
 from .models import Employee
 
+
 class EmployeeCreationForm(forms.ModelForm):
     username = forms.CharField(
         label="Логин",
         max_length=50,
         help_text="Введите уникальный логин для сотрудника.",
-        disabled=True
+        disabled=True,
     )
     password1 = forms.CharField(
-        label="Пароль",
-        widget=forms.PasswordInput,
-        help_text="Введите пароль."
+        label="Пароль", widget=forms.PasswordInput, help_text="Введите пароль."
     )
     password2 = forms.CharField(
         label="Повторите пароль",
         widget=forms.PasswordInput,
-        help_text="Введите пароль ещё раз для проверки."
+        help_text="Введите пароль ещё раз для проверки.",
     )
 
     class Meta:
         model = Employee
-        fields = ['username', 'first_name', 'last_name', 'middle_name', 'position', 'phone_number', 'email']
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "middle_name",
+            "position",
+            "phone_number",
+            "email",
+        ]
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

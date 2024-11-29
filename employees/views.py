@@ -7,6 +7,7 @@ def employee_list(request):
     employees = Employee.objects.filter(is_superuser=False)
     return render(request, "employees/employee_list.html", {"employees": employees})
 
+
 @login_required
 def profile(request):
     return render(request, "employees/profile.html")

@@ -11,6 +11,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    "documents",
     "chat",
     "core",
     "employees",

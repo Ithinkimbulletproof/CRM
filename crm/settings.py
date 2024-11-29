@@ -83,7 +83,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'employees.Employee'
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = "Asia/Yekaterinburg"
 USE_TZ = True

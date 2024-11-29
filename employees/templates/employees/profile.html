@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Личный кабинет</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">
+                Добро пожаловать,
+                {{ user.first_name }}
+                {% if user.middle_name %}
+                    {{ user.middle_name }}
+                {% endif %}
+                {{ user.last_name }}
+            </h5>
+            <p class="card-text"><strong>Логин:</strong> {{ user.username }}</p>
+            {% if user.email %}
+                <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+            {% endif %}
+            {% if user.position %}
+                <p class="card-text"><strong>Должность:</strong> {{ user.position }}</p>
+            {% endif %}
+            {% if user.phone_number %}
+                <p class="card-text"><strong>Телефон:</strong> {{ user.phone_number }}</p>
+            {% endif %}
+
+            <a href="{% url 'password_change' %}" class="btn btn-warning mt-3">Сменить пароль</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

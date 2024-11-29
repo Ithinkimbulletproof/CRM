@@ -9,10 +9,16 @@
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">{{ employee.first_name }} {{ employee.last_name }}</h5>
+                            <h5 class="card-title">
+                                {{ employee.first_name }}
+                                {% if employee.middle_name %}
+                                    {{ employee.middle_name }}
+                                {% endif %}
+                                {{ employee.last_name }}
+
+                            </h5>
                             <p class="card-text"><strong>Должность:</strong> {{ employee.position }}</p>
                             <p class="card-text"><strong>Телефон:</strong> {{ employee.phone_number }}</p>
-                            <a href="{% url 'update_employee' employee.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
                         </div>
                     </div>
                 </div>

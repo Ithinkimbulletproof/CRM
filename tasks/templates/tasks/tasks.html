@@ -1,10 +1,104 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Задачи - CRM система{% endblock %}
+{% extends "core/base.html" %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h1 class="text-center">Задачи</h1>
-        <p class="text-center">Здесь будут отображаться все задачи.</p>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center w-100">Список задач</h1>
+        <a href="{% url 'tasks_history' %}" class="btn btn-history">История задач</a>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-center">Мои задачи</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Статус</th>
+                        <th>Крайний срок</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        {% if task.assignee == request.user.employee %}
+                        <tr>
+                            <td>{{ task.title }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>{{ task.due_date }}</td>
+                            <td>
+                                <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">Редактировать</a>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="text-center">Задачи, которые я выдал</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Статус</th>
+                        <th>Исполнитель</th>
+                        <th>Крайний срок</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        {% if task.creator == request.user.employee %}
+                        <tr>
+                            <td>{{ task.title }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>{{ task.assignee }}</td>
+                            <td>{{ task.due_date }}</td>
+                            <td>
+                                <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">Редактировать</a>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'create_task' %}" class="btn btn-warning fixed-create-task">Создать задачу</a>
+
+{% block extra_css %}
+<style>
+    .btn-history {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        background-color: #f9a825;
+        color: #ffffff;
+        text-align: center;
+        white-space: nowrap;
+        border: none;
+    }
+
+    .btn-history:hover {
+        background-color: #fbc02d;
+        color: #000000;
+    }
+
+    .fixed-create-task {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        z-index: 999;
+        padding: 15px 30px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
 {% endblock %}

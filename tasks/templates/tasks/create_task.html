@@ -1,0 +1,86 @@
+{% extends "core/base.html" %}
+{% load tasks.form_filters %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Создание задачи</h1>
+    <form method="post" class="shadow p-4 rounded bg-light form-container">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label for="title" class="form-label">Название задачи</label>
+            {{ form.title|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="description" class="form-label">Описание задачи</label>
+            {{ form.description|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="due_date" class="form-label">Крайний срок</label>
+            {{ form.due_date|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="status" class="form-label">Статус</label>
+            {{ form.status|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="assignee" class="form-label">Исполнитель</label>
+            {{ form.assignee|add_class:"form-control" }}
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-success w-48">Создать задачу</button>
+            <a href="{% url 'tasks' %}" class="btn btn-secondary w-48">Отмена</a>
+        </div>
+    </form>
+</div>
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 15px;
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    .w-48 {
+        width: 48%;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% endblock %}

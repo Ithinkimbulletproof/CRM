@@ -2,33 +2,54 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">История задач</h1>
-
-    <table class="table table-bordered">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center w-100">История задач</h1>
+        <div>
+            <a href="{% url 'tasks' %}" class="btn btn-back me-2">Назад к задачам</a>
+        </div>
+    </div>
+    <table class="table table-bordered mt-4">
         <thead>
             <tr>
                 <th>Название</th>
-                <th>Статус</th>
-                <th>Исполнитель</th>
-                <th>Крайний срок</th>
+                <th>Описание</th>
                 <th>Дата завершения</th>
+                <th>Создатель</th>
+                <th>Исполнитель</th>
             </tr>
         </thead>
         <tbody>
             {% for task in completed_tasks %}
             <tr>
                 <td>{{ task.title }}</td>
-                <td>{{ task.status }}</td>
-                <td>{{ task.assignee }}</td>
-                <td>{{ task.due_date }}</td>
-                <td>{{ task.updated_at }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="text-center">Нет завершённых задач</td>
+                <td>{{ task.description|truncatechars:50 }}</td>
+                <td>{{ task.completed_at|date:"d.m.Y H:i" }}</td>
+                <td>{{ task.creator }}</td>
+                <td>{{ task.assignee|default:"Не назначен" }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<style>
+    .btn-back {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        background-color: #f9a825;
+        color: #ffffff;
+        text-align: center;
+        white-space: nowrap;
+        border: none;
+    }
+    .btn-back:hover,
+    .btn-history:hover {
+        background-color: #fbc02d;
+        color: #000000;
+    }
+    .me-2 {
+        margin-right: 8px;
+    }
+</style>
 {% endblock %}

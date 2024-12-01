@@ -26,10 +26,13 @@
                         <td>{{ task.title }}</td>
                         <td>{{ task.creator }}</td>
                         <td>{{ task.get_status_display }}</td>
-                        <td>{{ task.due_date|default:"Не указан" }} {% if task.due_time %} в {{ task.due_time|date:"H:i" }}{% endif %}</td>
+                        <td>{{ task.due_date|default:"Не указан" }}{% if task.due_time %} в {{ task.due_time|date:"H:i" }}{% endif %}</td>
                         <td>
-                            <a href="{% url 'update_task' task.id %}" class="btn btn-primary btn-sm mb-2">Редактировать</a>
-                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                            <div class="d-flex flex-column gap-2">
+                                <a href="{% url 'detail_task' task.id %}" class="btn btn-details btn-sm">Детали</a>
+                                <a href="{% url 'update_task' task.id %}" class="btn btn-edit btn-sm">Редактировать</a>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-delete btn-sm">Удалить</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -55,10 +58,13 @@
                         <td>{{ task.title }}</td>
                         <td>{{ task.get_status_display }}</td>
                         <td>{{ task.assignee }}</td>
-                        <td>{{ task.due_date|default:"Не указан" }} {% if task.due_time %} в {{ task.due_time|date:"H:i" }}{% endif %}</td>
+                        <td>{{ task.due_date|default:"Не указан" }}{% if task.due_time %} в {{ task.due_time|date:"H:i" }}{% endif %}</td>
                         <td>
-                            <a href="{% url 'update_task' task.id %}" class="btn btn-primary btn-sm mb-2">Редактировать</a>
-                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                            <div class="d-flex flex-column gap-2">
+                                <a href="{% url 'detail_task' task.id %}" class="btn btn-details btn-sm">Детали</a>
+                                <a href="{% url 'update_task' task.id %}" class="btn btn-edit btn-sm">Редактировать</a>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-delete btn-sm">Удалить</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -82,12 +88,10 @@
         white-space: nowrap;
         border: none;
     }
-
     .btn-history:hover {
         background-color: #fbc02d;
         color: #000000;
     }
-
     .fixed-create-task {
         position: fixed;
         bottom: 50px;
@@ -97,19 +101,35 @@
         font-size: 16px;
         border-radius: 8px;
     }
-
-    .btn-primary {
+    .btn-details {
+        background-color: #f57c00;
+        border-color: #f57c00;
+        color: #ffffff;
+    }
+    .btn-details:hover {
+        background-color: #e65100;
+        border-color: #e65100;
+    }
+    .btn-edit {
         background-color: #007bff;
         border-color: #007bff;
+        color: #ffffff;
     }
-
-    .btn-primary:hover {
+    .btn-edit:hover {
         background-color: #0056b3;
-        border-color: #004085;
+        border-color: #0056b3;
     }
-
-    .mb-2 {
-        margin-bottom: 10px;
+    .btn-delete {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #ffffff;
+    }
+    .btn-delete:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+    .gap-2 > * + * {
+        margin-top: 5px;
     }
 </style>
 {% endblock %}

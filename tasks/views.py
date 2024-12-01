@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.utils.timezone import now
 from .forms import TaskForm
 from .models import Task
 import logging
@@ -11,6 +12,7 @@ logger = logging.getLogger("tasks")
 @login_required
 def tasks_view(request):
     tasks = Task.objects.filter(Q(creator=request.user) | Q(assignee=request.user))
+    tasks = tasks.exclude(status="Completed")
     tasks = tasks.order_by("due_date")
 
     my_tasks = tasks.filter(assignee=request.user)
@@ -79,9 +81,19 @@ def delete_task(request, task_id):
     return render(request, "tasks/delete_task.html", {"task": task})
 
 
-def tasks_history(request):
-    completed_tasks = Task.objects.filter(status="Completed")
+def detail_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == "POST" and "mark_completed" in request.POST:
+        task.status = "Completed"
+        task.completed_at = now()
+        task.save()
+        return redirect("tasks_history")
 
+    return render(request, "tasks/detail_task.html", {"task": task})
+
+
+def tasks_history(request):
+    completed_tasks = Task.objects.filter(status="Completed").order_by("-completed_at")
     return render(
         request, "tasks/tasks_history.html", {"completed_tasks": completed_tasks}
     )

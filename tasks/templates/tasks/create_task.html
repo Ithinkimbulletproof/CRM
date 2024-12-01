@@ -1,7 +1,6 @@
 {% extends "core/base.html" %}
 {% load tasks.form_filters %}
 
-
 {% block content %}
 <div class="container mt-5">
     <h1 class="text-center mb-4">Создание задачи</h1>
@@ -24,6 +23,11 @@
         </div>
 
         <div class="mb-4">
+            <label for="due_time" class="form-label">Время</label>
+            {{ form.due_time|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-4">
             <label for="status" class="form-label">Статус</label>
             {{ form.status|add_class:"form-control" }}
         </div>
@@ -35,7 +39,7 @@
 
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-success w-48">Создать задачу</button>
-            <a href="{% url 'tasks' %}" class="btn btn-secondary w-48">Отмена</a>
+            <a href="{% url 'tasks' %}" class="btn btn-danger w-48">Отмена</a>
         </div>
     </form>
 </div>
@@ -73,6 +77,16 @@
         font-size: 16px;
     }
 
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
     .w-48 {
         width: 48%;
     }
@@ -83,4 +97,6 @@
 </style>
 {% endblock %}
 
+{% block extra_js %}
+{% endblock %}
 {% endblock %}

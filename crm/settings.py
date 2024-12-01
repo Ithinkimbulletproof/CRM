@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from decouple import config
 
@@ -54,6 +55,45 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "crm.wsgi.application"
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "debug.log"),
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "tasks": {
+            "handlers": ["file", "console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
 
 DATABASES = {
     "default": {
@@ -88,8 +128,11 @@ LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "Asia/Yekaterinburg"
 USE_TZ = True
-
 USE_I18N = True
+DATE_INPUT_FORMATS = [
+    "%Y-%m-%d %H:%M",
+]
+
 
 STATIC_URL = "static/"
 

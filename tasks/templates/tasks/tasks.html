@@ -14,24 +14,24 @@
                 <thead>
                     <tr>
                         <th>Название</th>
+                        <th>Создатель</th>
                         <th>Статус</th>
                         <th>Крайний срок</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for task in tasks %}
-                        {% if task.assignee == request.user.employee %}
-                        <tr>
-                            <td>{{ task.title }}</td>
-                            <td>{{ task.status }}</td>
-                            <td>{{ task.due_date }}</td>
-                            <td>
-                                <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">Редактировать</a>
-                                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
-                            </td>
-                        </tr>
-                        {% endif %}
+                    {% for task in my_tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.creator }}</td>
+                        <td>{{ task.get_status_display }}</td>
+                        <td>{{ task.due_date|default:"Не указан" }} {% if task.due_time %} в {{ task.due_time|date:"H:i" }}{% endif %}</td>
+                        <td>
+                            <a href="{% url 'update_task' task.id %}" class="btn btn-primary btn-sm mb-2">Редактировать</a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                        </td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -50,19 +50,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for task in tasks %}
-                        {% if task.creator == request.user.employee %}
-                        <tr>
-                            <td>{{ task.title }}</td>
-                            <td>{{ task.status }}</td>
-                            <td>{{ task.assignee }}</td>
-                            <td>{{ task.due_date }}</td>
-                            <td>
-                                <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">Редактировать</a>
-                                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
-                            </td>
-                        </tr>
-                        {% endif %}
+                    {% for task in assigned_tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.get_status_display }}</td>
+                        <td>{{ task.assignee }}</td>
+                        <td>{{ task.due_date|default:"Не указан" }} {% if task.due_time %} в {{ task.due_time|date:"H:i" }}{% endif %}</td>
+                        <td>
+                            <a href="{% url 'update_task' task.id %}" class="btn btn-primary btn-sm mb-2">Редактировать</a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                        </td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -98,6 +96,20 @@
         padding: 15px 30px;
         font-size: 16px;
         border-radius: 8px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .mb-2 {
+        margin-bottom: 10px;
     }
 </style>
 {% endblock %}

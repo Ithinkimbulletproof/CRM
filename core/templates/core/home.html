@@ -2,7 +2,63 @@
 
 {% block content %}
     <div class="text-center">
-        <h1 style="color: #ff9800;">Добро пожаловать в CRM систему!</h1>
+        <h1 class="text-warning">Добро пожаловать в CRM систему!</h1>
         <p>Здесь можно управлять задачами, сотрудниками и общаться в чате.</p>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-md-6 d-flex justify-content-center">
+                <div class="card shadow-sm w-100">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Новости</h3>
+
+                        <ul class="list-unstyled">
+                            <li class="d-flex align-items-center mb-2">
+                                <span class="me-2">•</span> 14 декабря грандиозное открытие Гастромолла "Главный"
+                            </li>
+                            <li class="d-flex align-items-center mb-2">
+                                <span class="me-2">•</span> Новое меню в ресторане Breadway
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <span class="me-2">•</span> RWA — независимая всероссийская премия винных карт Russian Wine Awards
+                                <br>В 2024 году наши рестораны the BARBARA и TRIBU отметили звёздами в номинации «Лучший выбор вин по бокалам»
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Задачи</h3>
+
+                        <h4 class="text-center">
+                            {% if tasks %}
+                                Задачи на сегодня и завтра
+                            {% else %}
+                                Сегодня нет задач.
+                            {% endif %}
+                        </h4>
+
+                        {% if tasks %}
+                            <ul class="list-group">
+                                {% for task in tasks %}
+                                    <li class="list-group-item">
+                                        <strong>{{ task.title }}</strong> -
+                                        {% if task.due_date_text %}
+                                            {{ task.due_date_text }} в {{ task.due_time }}
+                                        {% else %}
+                                            Дата не указана
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

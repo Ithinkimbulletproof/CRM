@@ -48,7 +48,10 @@
                                     <li class="list-group-item">
                                         <strong>{{ task.title }}</strong> -
                                         {% if task.due_date_text %}
-                                            {{ task.due_date_text }} в {{ task.due_time }}
+                                            {{ task.due_date_text }}
+                                            {% if task.due_time %}
+                                                в {{ task.due_time|date:"H:i" }}
+                                            {% endif %}
                                         {% else %}
                                             Дата не указана
                                         {% endif %}

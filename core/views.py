@@ -1,14 +1,31 @@
-from datetime import date, timedelta
+from datetime import timedelta, time
 from django.shortcuts import render
+from django.utils.timezone import localdate
 from tasks.models import Task
+from django.db.models import Q, Value
+from django.db.models.functions import Coalesce
+import logging
+
+logger = logging.getLogger("tasks")
 
 def home(request):
-    today = date.today()
+    today = localdate()
     tomorrow = today + timedelta(days=1)
 
-    tasks = Task.objects.filter(due_date__gte=today, due_date__lte=tomorrow)
+    logger.debug(f"Сегодняшняя дата: {today}, Завтрашняя дата: {tomorrow}")
+
+    tasks = Task.objects.filter(
+        Q(creator=request.user) | Q(assignee=request.user),
+        due_date__gte=today,
+        due_date__lte=tomorrow,
+    ).annotate(
+        sort_time=Coalesce('due_time', Value(time.max))
+    ).order_by('due_date', 'sort_time')
+
+    logger.debug(f"Найдено задач: {tasks.count()}")
 
     for task in tasks:
+        logger.debug(f"Обработка задачи: {task.title} (ID: {task.id}, Дата выполнения: {task.due_date}, Время: {task.due_time})")
         if task.due_date == today:
             task.due_date_text = "сегодня"
         elif task.due_date == tomorrow:
@@ -16,6 +33,6 @@ def home(request):
         else:
             task.due_date_text = task.due_date.strftime("%d.%m.%Y")
 
-        task.due_time = task.due_date.strftime("%H:%M") if task.due_date else ""
+    logger.debug(f"Отправлено задач на рендеринг: {[task.title for task in tasks]}")
 
     return render(request, "core/home.html", {"tasks": tasks})

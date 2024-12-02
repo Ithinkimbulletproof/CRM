@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Employee
 
 
+@login_required
 def employee_list(request):
     employees = Employee.objects.filter(is_superuser=False)
     return render(request, "employees/employee_list.html", {"employees": employees})

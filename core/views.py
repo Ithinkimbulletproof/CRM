@@ -1,5 +1,6 @@
 from datetime import timedelta, time
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.utils.timezone import localtime
 from tasks.models import Task
 from django.db.models import Q, Value
@@ -9,7 +10,14 @@ import logging
 logger = logging.getLogger("tasks")
 
 
+@login_required
 def home(request):
+    if not request.user.is_authenticated:
+        logger.debug(
+            "Анонимный пользователь пытается получить доступ к домашней странице."
+        )
+        return redirect("login")
+
     now = localtime()
     today = now.date()
     tomorrow = today + timedelta(days=1)
@@ -18,7 +26,7 @@ def home(request):
     is_evening = now.time() >= evening_time
 
     logger.debug(
-        f"Текущее время: {now}, Сегодняшняя дата: {today}, Завтрашняя дата: {tomorrow}, Вечер после {evening_time}: {is_evening}"
+        f"Текущее время: {now}, Сегодня: {today}, Завтра: {tomorrow}, Вечер после {evening_time}: {is_evening}"
     )
 
     tasks = (

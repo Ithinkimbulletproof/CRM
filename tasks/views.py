@@ -30,6 +30,7 @@ def tasks_view(request):
     )
 
 
+@login_required
 def create_task(request):
     if request.method == "POST":
         form = TaskForm(request.POST)
@@ -53,6 +54,7 @@ def create_task(request):
     return render(request, "tasks/create_task.html", {"form": form})
 
 
+@login_required
 def update_task(request, task_id):
     logger.debug(f"Начата обработка изменения задачи с ID {task_id}.")
     task = get_object_or_404(Task, id=task_id)
@@ -73,6 +75,7 @@ def update_task(request, task_id):
     return render(request, "tasks/update_task.html", {"form": form, "task": task})
 
 
+@login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == "POST":
@@ -81,6 +84,7 @@ def delete_task(request, task_id):
     return render(request, "tasks/delete_task.html", {"task": task})
 
 
+@login_required
 def detail_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == "POST" and "mark_completed" in request.POST:
@@ -92,8 +96,13 @@ def detail_task(request, task_id):
     return render(request, "tasks/detail_task.html", {"task": task})
 
 
+@login_required
 def tasks_history(request):
-    completed_tasks = Task.objects.filter(status="Completed").order_by("-completed_at")
+    # Фильтруем задачи по текущему пользователю
+    completed_tasks = Task.objects.filter(
+        (Q(creator=request.user) | Q(assignee=request.user)) & Q(status="Completed")
+    ).order_by("-completed_at")
+
     return render(
         request, "tasks/tasks_history.html", {"completed_tasks": completed_tasks}
     )

@@ -42,3 +42,4 @@ __MACOSX/
 *.egg-info/
 dist/
 build/
+/dump.rdb

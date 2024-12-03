@@ -54,6 +54,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "crm.wsgi.application"
+ASGI_APPLICATION = "crm.asgi.application"
 
 LOGGING = {
     "version": 1,
@@ -91,6 +92,15 @@ LOGGING = {
             "handlers": ["file", "console"],
             "level": "DEBUG",
             "propagate": True,
+        },
+    },
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }

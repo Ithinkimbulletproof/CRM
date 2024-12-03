@@ -98,7 +98,6 @@ def detail_task(request, task_id):
 
 @login_required
 def tasks_history(request):
-    # Фильтруем задачи по текущему пользователю
     completed_tasks = Task.objects.filter(
         (Q(creator=request.user) | Q(assignee=request.user)) & Q(status="Completed")
     ).order_by("-completed_at")

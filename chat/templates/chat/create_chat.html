@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Создать новую комнату{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Создать новую комнату</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Создать</button>
+    </form>
+    <a href="{% url 'chat_list' %}" class="btn btn-secondary mt-3">Вернуться к списку комнат</a>
+</div>
+{% endblock %}

@@ -56,7 +56,6 @@
             height: 80px;
         }
 
-        /* Чтобы меню не выходило за пределы экрана на мобильных устройствах */
         .navbar-collapse {
             flex-grow: 0;
         }
@@ -71,7 +70,6 @@
                     <span class="fs-4">Логотип</span>
                 </a>
 
-                <!-- Навигационное меню -->
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 d-flex flex-column flex-md-row">
                     {% if user.is_authenticated %}
                         <li><a href="/" class="nav-link text-white {% if request.path == '/' %}text-warning{% endif %}">Главная</a></li>
@@ -82,7 +80,6 @@
                     {% endif %}
                 </ul>
 
-                <!-- Кнопка для гамбургер-меню на мобильных устройствах -->
                 <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Комната: {{ room_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Комната: {{ room_name }}</h1>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-warning text-white">
+                    <strong>Чат: {{ room_name }}</strong>
+                </div>
+                <div class="card-body" id="chat-box" style="height: 300px; overflow-y: scroll;">
+                    <textarea id="chat-log" cols="100" rows="10" readonly></textarea>
+                </div>
+                <div class="card-footer">
+                    <form id="chat-form">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="message-input" placeholder="Введите сообщение" aria-label="Введите сообщение" required>
+                            <button class="btn btn-warning" type="submit">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const roomName = "{{ room_name }}";
+    const ws = new WebSocket(`ws://${window.location.host}/ws/chat/${roomName}/`);
+
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        const chatLog = document.getElementById('chat-log');
+        chatLog.value += `${data.sender}: ${data.message}\n`;
+    };
+
+    document.getElementById('chat-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value;
+        ws.send(JSON.stringify({ 'message': message }));
+        messageInput.value = '';
+    });
+</script>
+{% endblock %}
